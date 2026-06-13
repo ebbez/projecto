@@ -25,14 +25,13 @@ window.peer.on('open', () => {
       console.log("Receiving stream");
       window.remoteStream = stream
       window.remoteScreen.srcObject = stream;
-        // Explicitly force the browser to decode and render the stream
-      window.remoteScreen.play().catch(error => {
-        console.error("Playback failed. Browser blocked autoplay:", error);
-      });
     })
   })
 })
 
+document.querySelector("#connect").addEventListener('click', () => {
+  window.remoteScreen.play();
+})
 window.peer.on('error', (error) => {
   console.error(error);
 })
