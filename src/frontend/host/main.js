@@ -1,11 +1,12 @@
 import Peer from "peerjs";
 
+import './style.css';
+
 const peer = new Peer('host', {
   host: location.hostname,
   port: location.port,
   path: '/peerjs',
   secure: false,
-  debug: 3,
   config: {
     iceServers: []
   }
@@ -13,11 +14,15 @@ const peer = new Peer('host', {
 
 function getScreenMedia() {
   navigator.mediaDevices.getDisplayMedia({
-    
+    displaySurface: 'monitor',
+    audio: false,
+    systemAudio: 'exclude',
+    windowAudio: 'exclude',
+    selfBrowserSurface: 'exclude'
   }).then((stream) => {
     window.localScreenStream = stream;
-    window.screenvideo.srcObject = stream;
-    window.screenvideo.autoplay = true;
+    window.localScreen.srcObject = stream;
+    window.localScreen.autoplay = true;
   })
 }
 
@@ -25,8 +30,7 @@ getScreenMedia()
 
 peer.on('connection', (conn) => {
   if (window.localScreenStream) {
-    console.log("Received connection, responding with call");
-    window.call = peer.call(conn.peer, window.localScreenStream);
+    const call = peer.call(conn.peer, window.localScreenStream);
   }
 })
 
