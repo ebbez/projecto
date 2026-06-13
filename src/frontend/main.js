@@ -1,5 +1,3 @@
-import "./style.css";
-
 import peer from "peerjs";
 
 console.log('Setup peer')
@@ -8,17 +6,30 @@ window.peer = new peer({
   port: location.port,
   path: '/peerjs',
   secure: false,
-  debug: 3
+  debug: 3,
+  config: {
+    iceServers: []
+  }
 })
 
 window.peer.on('open', () => {
-  window.call = window.peer.call('host', new MediaStream());
+  console.log("Signal server connection established, connecting with 'host'");
+  window.peer.connect('host');
 
-  window.call.on('stream', (stream) => {
-    console.log("Receiving stream");
-    window.remoteStream = stream
-    window.remoteScreen.srcObject = stream;
-    window.remoteScreen.autoplay = true;
+  window.peer.on('call', (call) => {
+    console.log("Received call from host after succesful connection")
+    console.log("Answering call")
+    call.answer();
+
+    call.on('stream', (stream) => {
+      console.log("Receiving stream");
+      window.remoteStream = stream
+      window.remoteScreen.srcObject = stream;
+        // Explicitly force the browser to decode and render the stream
+      window.remoteScreen.play().catch(error => {
+        console.error("Playback failed. Browser blocked autoplay:", error);
+      });
+    })
   })
 })
 

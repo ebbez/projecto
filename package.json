@@ -6,10 +6,11 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon --exec electron . -w src/server",
-    "start": "NODE_ENV=production electron src/server/main.js",
+    "start": "cross-env NODE_ENV=production electron src/server/main.js",
     "build": "vite build"
   },
   "devDependencies": {
+    "cross-env": "^10.1.0",
     "electron": "^42.4.0",
     "nodemon": "^3.1.10",
     "vite": "^6.3.3"

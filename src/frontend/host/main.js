@@ -5,7 +5,10 @@ const peer = new Peer('host', {
   port: location.port,
   path: '/peerjs',
   secure: false,
-  debug: 3
+  debug: 3,
+  config: {
+    iceServers: []
+  }
 })
 
 function getScreenMedia() {
@@ -20,9 +23,11 @@ function getScreenMedia() {
 
 getScreenMedia()
 
-peer.on('call', (call) => {
-  console.log('Received call, answering with stream');
-  call.answer(window.localScreenStream)
+peer.on('connection', (conn) => {
+  if (window.localScreenStream) {
+    console.log("Received connection, responding with call");
+    window.call = peer.call(conn.peer, window.localScreenStream);
+  }
 })
 
 peer.on('error', (err) => {
