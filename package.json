@@ -5,7 +5,7 @@
   "main": "src/server/main.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --exec electron . -w src/server",
+    "dev": "nodemon --exec electron . -w src/",
     "start": "cross-env NODE_ENV=production electron src/server/main.js",
     "build": "vite build"
   },
@@ -19,6 +19,7 @@
     "express": "^5.1.0",
     "peer": "^1.0.2",
     "peerjs": "^1.5.5",
+    "qrcode": "^1.5.4",
     "vite-express": "*"
   }
 }

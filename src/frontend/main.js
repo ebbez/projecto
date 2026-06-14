@@ -25,15 +25,20 @@ window.peer.on('open', () => {
     call.on('stream', (stream) => {
       window.remoteStream = stream
       //window.remoteScreen.srcObject = stream;
-      document.querySelector("#app").innerHTML = "<div id='connectButton'>Beeld aanwezig. Druk op deze knop om het scherm in volledig scherm weer te geven</div>";
+      document.querySelector("#app").innerHTML = "<div id='connectButton'>Beeld aanwezig. Druk op deze knop om het scherm weer te geven</div>";
 
       document.querySelector("#connectButton").addEventListener('click', () => {
-        document.querySelector("#app").innerHTML = "<video id='remoteScreen'></video>";
-        const remoteScreen = document.querySelector("#remoteScreen");
+        const remoteScreen = document.createElement('video');
+        remoteScreen.id = 'remoteScreen';
+        window.app.innerHTML = '';
+        window.app.appendChild(remoteScreen);
+
         remoteScreen.srcObject = stream;
         remoteScreen.autoplay = true;
 
-        document.body.requestFullscreen();
+        remoteScreen.addEventListener('click', () => {
+          document.body.requestFullscreen();
+        })
       })
     })
   })
